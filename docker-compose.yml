@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  server:
+  backend:
     build:
       context: server
       dockerfile: Dockerfile
@@ -15,4 +15,14 @@ services:
     ports:
       - 5001:5000
     volumes:
-      - ./server:/usr/app
+      - ./server:/usr/app  # Mount server directory for live reloading
+    depends_on:
+      - frontend  # Wait for frontend to be ready
+  frontend:
+    build:
+      context: cognate-app
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./client:/usr/app  # Mount client directory for live reloading
