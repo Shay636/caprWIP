@@ -17,11 +17,6 @@ caddy run --config Caddyfile.dev
 # opens interface at specified port (5002 by default)
 ```
 
-You must have `libfoma0` and `libfoma0-dev` installed for the API to work. **Note** that if you are using the docker container with the API (as you probably should), this shouldn't be a problem.
-```
-sudo apt-get install libfoma0 libfoma0-dev
-```
-
 ## Important Notes
 
 For much more in-depth instructions, see [SETUP.md](https://github.com/knightss27/capr/blob/update/SETUP.md).
