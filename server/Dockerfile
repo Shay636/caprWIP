@@ -22,6 +22,11 @@ EXPOSE 5000
 WORKDIR /usr/app
 COPY . .
 
+# Set the Flask app environment varible
+ENV FLASK_APP=server.py
+
+# Run the Flask app
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
 
 # CMD ["flask", "run"]
 
