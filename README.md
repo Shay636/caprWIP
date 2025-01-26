@@ -8,19 +8,10 @@ To run while developing (with Python 3), follow these steps:
 (Untested on Windows, works fine on Mac and Linux)
 
 ```
-docker compose build
-docker compose up
+docker-compose up --build
 ```
 
-and then (with Node >=14)
-```
-cd cognate-app
-npm i
-npm run dev
-# opens interface on localhost:8080
-```
-
-and then run Caddy to connect the interface and API.
+Open a new terminal, then run Caddy to connect the interface and API.
 ```
 caddy run --config Caddyfile.dev
 # opens interface at specified port (5002 by default)
