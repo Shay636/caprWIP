@@ -11,19 +11,34 @@
     export let columnIds: string[];
     export let columns: { [key: string]: Column}
     export let loaded: CognateApp;
+    export let newColumn: string;
     // Callback for adding a new column
     export let addNewColumn: () => void;
 
+    // generate random ID
+    const genId = () => Math.random().toString(36).substr(2, 9)
+
     // Creates copies of our data for dragging and dropping, central state is only mutated on finalization
-    let items = columnIds.map((c, i) => {return {id: i, name: c}});
+    let items = columnIds.map((c, i) => {return {id: genId(), name: c}});
     let columnItems = columnIds.map((c) => {return {id: c, items: columns[c].syllableIds.map(s => loaded.syllables[s])}})
     let pinnedItems = [];
+
+    const updateBoard = () => {
+        items = columnIds.map((c, i) => {return {id: genId(), name: c}});
+        columnItems = [...pinnedItems.map((c) => {return {id: c.name, items: columns[c.name].syllableIds.map(s => loaded.syllables[s])}}), ...columnIds.map((c) => {return {id: c, items: columns[c].syllableIds.map(s => loaded.syllables[s])}})];
+        console.log("udate")
+    }
+
+    // undate current board when new column is added
+   $: if(newColumn) {
+    updateBoard();
+        newColumn = "";
+    }
 
     // Update items when we switch boards
     let prevBoard = $currentBoard;
     $: if ($currentBoard != prevBoard) {
-        items = columnIds.map((c, i) => {return {id: i, name: c}});
-        columnItems = [...pinnedItems.map((c) => {return {id: c.name, items: columns[c.name].syllableIds.map(s => loaded.syllables[s])}}), ...columnIds.map((c) => {return {id: c, items: columns[c].syllableIds.map(s => loaded.syllables[s])}})];
+        updateBoard();
         prevBoard = $currentBoard;
     }
 
@@ -32,7 +47,7 @@
         items = e.detail.items;
     }
     const handleFinalize = async (e) => {
-        console.log('normal finalize', e.detail.items)
+        // console.log('normal finalize', e.detail.items)
         items = e.detail.items;
         loaded.boards[$currentBoard].columnIds = e.detail.items.map(i => i.name);
         await tick();
@@ -82,6 +97,7 @@
         }
         columnItems = [...pinnedItems.map((c) => {return {id: c.name, items: columns[c.name].syllableIds.map(s => loaded.syllables[s])}}), ...columnIds.map((c) => {return {id: c, items: columns[c].syllableIds.map(s => loaded.syllables[s])}})];
     }
+
 </script>
 
 <main>
